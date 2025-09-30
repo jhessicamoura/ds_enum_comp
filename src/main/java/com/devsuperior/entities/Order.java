@@ -2,11 +2,14 @@ package com.devsuperior.entities;
 
 import com.devsuperior.entities.enums.OrderStatus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Order {
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     private Date moment;
     private OrderStatus status;
@@ -14,10 +17,7 @@ public class Order {
     private Client client;
     private List<OrderItem> items = new ArrayList<>();
 
-    public Order(){
-    }
-
-    public Order(Date moment, OrderStatus status, Client client, List<OrderItem> items) {
+    public Order(Date moment, OrderStatus status, Client client) {
         this.moment = moment;
         this.status = status;
         this.client = client;
@@ -65,5 +65,22 @@ public class Order {
             sum+= c.subTotal();
         }
         return sum;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Order moment: ");
+        sb.append(sdf.format(moment) + "\n");
+        sb.append("Order status: ");
+        sb.append(status + "\n");
+        sb.append("Client: ");
+        sb.append(client.toString() + "\n");
+        sb.append("Order items:\n");
+        for (OrderItem c : items){
+            sb.append(c.toString() + "\n");
+        }
+        sb.append("Total price: $" + String.format("%.2f", total()));
+
+        return sb.toString();
     }
 }
